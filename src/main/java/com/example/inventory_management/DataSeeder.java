@@ -259,5 +259,16 @@ public class DataSeeder implements CommandLineRunner {
             employeeUser.setAssigned(roleRepository.findByName("EMPLOYEE").get());
             userRepository.save(employeeUser);
         }
+
+        // Check and create Manager user if not present
+        if (userRepository.findByEmailAndActive("manager@domain.com", true).isEmpty()) {
+            User managerUser = new User();
+            managerUser.setEmail("manager@domain.com");
+            managerUser.setPassword(new BCryptPasswordEncoder().encode("managerpassword"));
+            managerUser.setActive(true);
+            managerUser.setContact("1234567890");
+            managerUser.setAssigned(roleRepository.findByName("MANAGER").get());
+            userRepository.save(managerUser);
+        }
     }
 }
